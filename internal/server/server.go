@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/Yandex-Practicum/go1fl-sprint6-final/internal/handlers"
 )
 
 // Server структура для HTTP сервера
@@ -37,7 +39,9 @@ func New(logger *log.Logger) *Server {
 func createRouter() *http.ServeMux {
 	router := http.NewServeMux()
 
-	// Здесь будут регистрироваться хендлеры
+	// Регистрируем хендлеры
+	router.HandleFunc("/", handlers.RootHandler)
+	router.HandleFunc("/upload", handlers.UploadHandler)
 
 	return router
 }

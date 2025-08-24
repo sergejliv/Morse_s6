@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"html/template"
 	"io"
 	"net/http"
 	"os"
@@ -13,6 +12,7 @@ import (
 )
 
 // RootHandler обрабатывает корневой эндпоинт /
+
 func RootHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -24,36 +24,17 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Парсим и исполняем HTML шаблон
-	tmpl, err := template.ParseFiles("index.html")
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error parsing template: %v", err), http.StatusInternalServerError)
-		return
-	}
-
-	err = tmpl.Execute(w, nil)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error executing template: %v", err), http.StatusInternalServerError)
-		return
-	}
+	http.ServeFile(w, r, "../index.html")
 }
 
-// UploadHandler обрабатывает эндпоинт /upload
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	// Парсим multipart форму с максимальным размером 10MB
-	err := r.ParseMultipartForm(10 << 20) // 10 MB
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error parsing form: %v", err), http.StatusInternalServerError)
-		return
-	}
-
 	// Получаем файл из формы
-	file, header, err := r.FormFile("file")
+	file, header, err := r.FormFile("myFile")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error retrieving file: %v", err), http.StatusInternalServerError)
 		return
