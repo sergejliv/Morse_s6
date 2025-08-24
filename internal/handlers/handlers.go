@@ -23,9 +23,10 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 	http.ServeFile(w, r, "../index.html")
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
