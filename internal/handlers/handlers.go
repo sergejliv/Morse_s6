@@ -23,7 +23,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 
 	http.ServeFile(w, r, "/index.html")
 
@@ -66,7 +66,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Возвращаем результат конвертации
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "File converted successfully!\n")
 	fmt.Fprintf(w, "Original file: %s\n", header.Filename)
@@ -79,7 +79,7 @@ func generateFileName(originalName string) string {
 	// Получаем расширение оригинального файла
 	ext := filepath.Ext(originalName)
 	if ext == "" {
-		ext = ".html" // расширение по умолчанию
+		ext = ".txt" // расширение по умолчанию
 	}
 
 	// Генерируем уникальное имя на основе времени
