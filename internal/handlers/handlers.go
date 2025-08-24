@@ -25,6 +25,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.ServeFile(w, r, "../index.html")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
