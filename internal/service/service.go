@@ -32,23 +32,31 @@ func isMorseCode(s string) bool {
 		return false
 	}
 
-	// Если есть ЛЮБЫЕ буквы (русские или английские) - это текст, а не Morse
+	// Если есть ЛЮБЫЕ буквы (русские, английские) - это текст, а не Morse
 	for _, char := range trimmed {
 		if unicode.IsLetter(char) {
 			return false
 		}
 	}
 
-	// Проверяем, что строка содержит только допустимые символы Морзе
+	// Если есть цифры - это тоже не Morse (в контексте этого задания)
 	for _, char := range trimmed {
-		// Допустимые символы: точка, тире, пробел, слэш
-		if char != '.' && char != '-' && char != ' ' && char != '/' {
+		if char >= '0' && char <= '9' {
+			return false
+		}
+	}
+
+	// Проверяем, что строка содержит ТОЛЬКО допустимые символы Морзе
+	for _, char := range trimmed {
+		// Допустимые символы: точка, тире
+		if char != '.' && char != '-' {
 			return false
 		}
 	}
 
 	// Дополнительная проверка: должна быть хотя бы одна точка или тире
-	if !strings.Contains(trimmed, ".") && !strings.Contains(trimmed, "-") {
+	hasDotsOrDashes := strings.Contains(trimmed, ".") || strings.Contains(trimmed, "-")
+	if !hasDotsOrDashes {
 		return false
 	}
 
