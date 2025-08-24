@@ -24,18 +24,20 @@ func Convert(input string) (string, error) {
 	}
 }
 
+// isMorseCode определяет, является ли строка кодом Морзе
 func isMorseCode(s string) bool {
 	trimmed := strings.TrimSpace(s)
 	if trimmed == "" {
 		return false
 	}
 
-	// Если есть любые буквы - это текст
+	// Если есть ЛЮБЫЕ буквы (русские или английские) - это текст, а не Morse
 	if strings.ContainsFunc(trimmed, unicode.IsLetter) {
 		return false
 	}
 
-	// Проверяем, что нет запрещенных символов
+	// Проверяем, что строка содержит только допустимые символы Морзе
+	// Допустимые символы: точка, тире, пробел, слэш
 	hasInvalidChars := strings.ContainsFunc(trimmed, func(r rune) bool {
 		return r != '.' && r != '-' && r != ' ' && r != '/' && !unicode.IsSpace(r)
 	})
@@ -44,6 +46,6 @@ func isMorseCode(s string) bool {
 		return false
 	}
 
-	// Должна быть хотя бы одна точка или тире
+	// Дополнительная проверка: должна быть хотя бы одна точка или тире
 	return strings.Contains(trimmed, ".") || strings.Contains(trimmed, "-")
 }
