@@ -24,34 +24,26 @@ func Convert(input string) (string, error) {
 	}
 }
 
-// isMorseCode определяет, является ли строка кодом Морзе
-// service/converter.go
 func isMorseCode(s string) bool {
 	trimmed := strings.TrimSpace(s)
 	if trimmed == "" {
 		return false
 	}
 
-	// Проверить на наличие букв - если найдены, это текст
-	for _, char := range trimmed {
-		if unicode.IsLetter(char) {
-			return false
-		}
-	}
-
-	// Проверить, содержит ли только допустимые символы Морзе
-	validChars := ". -/"
-	for _, char := range trimmed {
-		if !strings.ContainsRune(validChars, char) && !unicode.IsSpace(char) {
-			return false
-		}
-	}
-
-	// Должен содержать хотя бы одну точку или тире
-	hasMorseChars := strings.Contains(trimmed, ".") || strings.Contains(trimmed, "-")
-	if !hasMorseChars {
+	// Если есть любые буквы - это текст
+	if strings.ContainsFunc(trimmed, unicode.IsLetter) {
 		return false
 	}
 
-	return true
+	// Проверяем, что нет запрещенных символов
+	hasInvalidChars := strings.ContainsFunc(trimmed, func(r rune) bool {
+		return r != '.' && r != '-' && r != ' ' && r != '/' && !unicode.IsSpace(r)
+	})
+
+	if hasInvalidChars {
+		return false
+	}
+
+	// Должна быть хотя бы одна точка или тире
+	return strings.Contains(trimmed, ".") || strings.Contains(trimmed, "-")
 }
