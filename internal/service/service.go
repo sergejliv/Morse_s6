@@ -24,11 +24,19 @@ func Convert(input string) (string, error) {
 }
 
 // isMorseCode определяет, является ли строка кодом Морзе
+// isMorseCode определяет, является ли строка кодом Морзе
 func isMorseCode(s string) bool {
 	// Очищаем строку от пробелов по краям
 	trimmed := strings.TrimSpace(s)
 	if trimmed == "" {
 		return false
+	}
+
+	// Если есть русские буквы - это точно не Morse
+	for _, char := range trimmed {
+		if (char >= 'а' && char <= 'я') || (char >= 'А' && char <= 'Я') {
+			return false
+		}
 	}
 
 	// Проверяем, что строка содержит только допустимые символы Морзе
