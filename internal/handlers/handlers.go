@@ -79,7 +79,7 @@ func generateFileName(originalName string) string {
 	// Получаем расширение оригинального файла
 	ext := filepath.Ext(originalName)
 	if ext == "" {
-		ext = ".txt" // расширение по умолчанию
+		ext = ".html" // расширение по умолчанию
 	}
 
 	// Генерируем уникальное имя на основе времени
